@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mofei.mavenparent</groupId>
+    <artifactId>maven-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>maven-java1</module>
+        <module>maven-java2</module>
+    </modules>
+    <packaging>pom</packaging>
+    <description>maven父工程</description>
+
+    <!--
+        maven父工程必须遵循以下两点要求
+        1：packaging标签的文本内容必须设置为pom
+        2：把src删除掉
+    -->
+    <!--
+        packaging标签指定的打包方式：默认为jar
+    -->
+    <!--
+        pom是项目对象模型(Project Object Model) 该文件是可以被继承的
+        maven多模块管理，其实就是让它的子模块的pom文件继承父工程的pom文件
+    -->
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.6</version>
+        <relativePath/>
+    </parent>
+
+    <!--父工程管理依赖的版本号-->
+    <properties>
+        <!--自定义标签名称： 项目名称+字段version-->
+        <mysql.version>5.1.49</mysql.version>
+    </properties>
+
+    <!--dependencies中声明的所有依赖会被子项目无条件继承-->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!--加强管理子模块依赖,在父模块的dependencyManagement中声明所有子模块的依赖并声明版本号,
+    而在此处声明的依赖不会被子模块无条件继承,子模块要想使用此依赖，在子模块中声明即可，并且不指定版本号，
+    版本号就会继承父工程中dependencyManagement对应的版本号
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>
